@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { Button, Label, Wrapper } from './Phonebook.styled';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { addUser } from 'redux/contactsSlice';
 
-export const Phonebook = ({ onSubmit, data }) => {
+
+export const Phonebook = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-
-  // state = {
-  //   name: '',
-  //   number: '',
-  // };
- const handleOnChange = ({ target: { name, value } }) => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts);
+  const handleOnChange = ({ target: { name, value } }) => {
     switch (name) {
       case 'name':
         setName(value);
@@ -21,21 +23,30 @@ export const Phonebook = ({ onSubmit, data }) => {
       default:
         throw new Error();
     }
-    // this.setState({ [target.name]: target.value, [target.name]: target.value });
   };
- const handleOnSubmit = event => {
-   event.preventDefault();
-   onSubmit({ name, number });
-   reset();
- };
+  const handleOnSubmit = event => {
+    event.preventDefault();
+    if(!name.trim() || !number.trim()) return toast.warn('Please,fill the field.')
+    const arrayOfNames = [];
+    contacts.forEach(user => {
+      arrayOfNames.push(user.name.toLowerCase());
+    });
+    if (arrayOfNames.includes(name.toLowerCase())) {
+      return toast.warn(`${name} is already in contacts.`);
+    } else {
+      dispatch(addUser(name, number));
+    }
+    reset();
+  };
 
   const reset = () => {
     setName('');
-    setNumber('')
-    // this.setState({ name: '', number: '' });
+    setNumber('');
   };
   return (
     <Wrapper>
+      <ToastContainer />
+
       <form onSubmit={handleOnSubmit}>
         <Label>
           <span>Name</span>
@@ -68,11 +79,11 @@ export const Phonebook = ({ onSubmit, data }) => {
   );
 };
 
-  Phonebook.propTypes = {
-    data: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-      })
-    ),
-    onSubmit: PropTypes.func,
-  };
+Phonebook.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    })
+  ),
+  onSubmit: PropTypes.func,
+};
