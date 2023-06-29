@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Button, Label, Wrapper } from './Phonebook.styled';
-import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -79,11 +78,3 @@ export const Phonebook = () => {
   );
 };
 
-Phonebook.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    })
-  ),
-  onSubmit: PropTypes.func,
-};

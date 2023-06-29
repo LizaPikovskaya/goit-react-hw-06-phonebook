@@ -18,7 +18,3 @@ export const Filter = () => {
   );
 };
 
-// Filter.propTypes = {
-//   value: PropTypes.string.isRequired,
-//   onChangeFilter: PropTypes.func,
-// };

@@ -2,11 +2,11 @@ import {  Wrapper } from 'components/Phonebook/Phonebook.styled';
 import { List } from './Contacts.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser } from 'redux/contactsSlice';
+import { selectContacts, selectFilter } from 'redux/selectots';
 
 export const Contacts = () => {
-  const data = useSelector(state => state.contacts);
-  console.log(data);
-  const filterValue = useSelector(state=> state.filter);
+  const data = useSelector(selectContacts);
+  const filterValue = useSelector(selectFilter);
   const dispatch = useDispatch();
   const filterUser = () => {
     return data.filter(({ name }) =>
@@ -32,13 +32,3 @@ export const Contacts = () => {
 };
 
 
-// Contacts.propTypes = {
-//   data: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.string.isRequired,
-//       name: PropTypes.string.isRequired,
-//       number: PropTypes.string.isRequired,
-//     })
-//   ),
-//   onDeleteUser: PropTypes.func,
-// };
